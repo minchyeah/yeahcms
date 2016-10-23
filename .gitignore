@@ -2,3 +2,6 @@
 .buildpath
 .project
 .settings
+.idea
+composer.lock
+*.log
