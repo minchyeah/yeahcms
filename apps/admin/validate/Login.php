@@ -13,13 +13,13 @@ class Login extends Validate
     protected $rule = [
         'username' => 'require',
         'password' => 'require',
-        'verify'   => 'require|captcha'
+        'captcha'   => 'require|captcha'
     ];
 
     protected $message = [
         'username.require' => '请输入用户名',
         'password.require' => '请输入密码',
-        'verify.require'   => '请输入验证码',
-        'verify.captcha'   => '验证码不正确'
+        'captcha.require'   => '请输入验证码',
+        'captcha.captcha'   => '验证码不正确'
     ];
 }

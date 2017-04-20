@@ -29,7 +29,7 @@ class Login extends Controller
     public function login()
     {
         if ($this->request->isPost()) {
-            $data            = $this->request->only(['username', 'password', 'verify']);
+            $data            = $this->request->only(['username', 'password', 'captcha']);
             $validate_result = $this->validate($data, 'Login');
 
             if ($validate_result !== true) {
