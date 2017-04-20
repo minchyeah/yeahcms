@@ -228,4 +228,16 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+    
+    // 验证码配置
+    'captcha' => [
+        'fontSize' => '18',
+         // 验证码字体大小(px)
+        'imageH'   => 40,
+        // 验证码图片高度
+        'imageW'   => 140,
+        // 验证码图片宽度
+        'length'   => 4,
+        // 验证码位数
+    ]
 ];
