@@ -35,18 +35,17 @@ class Login extends Controller
             if ($validate_result !== true) {
                 $this->error($validate_result);
             } else {
+                $where = array();
                 $where['username'] = $data['username'];
-                $where['password'] = md5($data['password'] . Config::get('salt'));
+                $admin_user = Db::name('admin')->field('id,username,password,pwdsalt,status')->where($where)->find();
 
-                $admin_user = Db::name('admin_user')->field('id,username,status')->where($where)->find();
-
-                if (!empty($admin_user)) {
+                if (!empty($admin_user) && $admin_user['password'] == md5(md5($data['password']) . $admin_user['pwdsalt'])) {
                     if ($admin_user['status'] != 1) {
                         $this->error('当前用户已禁用');
                     } else {
                         Session::set('admin_id', $admin_user['id']);
                         Session::set('admin_name', $admin_user['username']);
-                        Db::name('admin_user')->update(
+                        Db::name('admin')->update(
                             [
                                 'last_login_time' => date('Y-m-d H:i:s', time()),
                                 'last_login_ip'   => $this->request->ip(),
