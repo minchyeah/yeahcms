@@ -22,38 +22,36 @@
 * 头部 
 */
     
-    .layui-header::before {
-        position: absolute;
-        bottom: 0;
-        content: "";
-        width: 100%;
-        border-bottom: 5px solid #1AA094;
-        left: 0;
-    }
-    
     .layui-header .jqadmin-logo-box {
-        display: block;
         float: left;
-        left: 20px;
-        width: 173px;
+        min-width: 150px;
+        position: relative;
+        padding-right: 30px;
     }
     
-    .layui-header.logo img {
-        width: 143px;
-        height: 60px;
+    .layui-header .jqadmin-logo-box h1 {
+        font-size: 1.5rem;
+        color: #CCC;
+        text-align: center;
+        line-height: 60px;
+        font-style: italic;
+        float: left;
+        width: 100%;
+        padding: 0 10px;
     }
     
     .layui-header .menu-type {
-        display: inline-block;
         background: #009688;
-        padding: 0 5px;
-        line-height: 56px;
-        height: 100%;
+        padding: 0px 8px;
         cursor: pointer;
+        margin-top: 15px;
+        font-size: 1.5rem;
+        color: #EEE;
+        position: absolute;
+        right: 0;
     }
     
     .layui-header .jqadmin-main-menu {
-        left: 200px;
         float: left;
     }
     
@@ -105,7 +103,12 @@
     }
     
     .layui-nav-child dd {
-        line-height: 36px;
+        line-height: 30px;
+        text-indent: 20px;
+    }
+    
+    .hide-icon {
+        display: none;
     }
     /**
 *左边菜单
@@ -209,11 +212,46 @@
     .jqadmin-tab-box .tab-move-btn {
         position: absolute;
         right: 0;
-        top: 0;
-        background: #f2f2f2;
-        height: 40px;
+        top: 0px;
+        background: #FFF;
+        height: 42px;
         line-height: 40px;
         display: none;
+        text-align: center;
+        cursor: pointer;
+        padding: 0 15px;
+        border: 1px solid #1FA094;
+        border-bottom: none;
+        border-top: none;
+        z-index: 10000;
+    }
+    
+    .menu-list {
+        position: absolute;
+        right: 0;
+        top: 102px;
+        width: 120px;
+        padding: 10px 15px;
+        z-index: 998;
+        background: #FFF;
+        border: 1px solid #1FA094;
+        border-top: none;
+        border-radius: 0 0 3px 3px;
+        display: none;
+    }
+    
+    .menu-list li {
+        height: 28px;
+        line-height: 28px;
+    }
+    
+    .jqadmin-tab-box .tab-move-btn span {
+        font-size: 12px;
+    }
+    
+    .jqadmin-tab-box .tab-move-btn span i {
+        font-size: 8px;
+        padding-left: 5px;
     }
     
     .jqadmin-tab-box .tab-move-btn .move-left-btn,
@@ -226,8 +264,8 @@
 *底部
 */
     
-    .jqadmin-foot {
-        height: 30px;
+    .layui-layout-admin .jqadmin-foot {
+        height: 34px;
         padding: 5px 0;
         line-height: 30px;
         text-align: center;
@@ -283,41 +321,4 @@
         text-align: center;
         background: #CCC;
         display: none;
-    }
-    
-    @media screen and (max-width:54.8571rem) {
-        .layui-header .jqadmin-logo-box {
-            width: 2.57rem;
-        }
-        .layui-header .jqadmin-logo-box .logo {
-            display: none;
-        }
-        .layui-header .header-right .my-tips {
-            display: none;
-        }
-        .layui-header .layui-side {
-            width: 0;
-        }
-    }
-    
-    @media screen and (max-width:45.7142rem) {
-        .jqadmin-main-menu .layui-nav {
-            position: absolute;
-            z-index: 10;
-            background: #CCC;
-            width: 100%;
-            display: none;
-        }
-        .jqadmin-main-menu .layui-nav .layui-nav-item a {
-            color: #333;
-        }
-        .jqadmin-main-menu .layui-nav .layui-this a {
-            color: #1AA094;
-        }
-        .jqadmin-copyright .layui {
-            display: none;
-        }
-        .menu-btn {
-            display: block;
-        }
     }

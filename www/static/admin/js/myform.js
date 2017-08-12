@@ -9,41 +9,39 @@
  * +----------------------------------------------------------------------
  */
 
-layui.define(['jquery', 'tags', 'layedit', 'jqform', 'upload'], function(exports) {
+layui.define(['jquery', 'jqtags', 'laytpl', 'jqform', 'upload'], function(exports) {
     var $ = layui.jquery,
-        layedit = layui.layedit,
+        tpl = layui.laytpl,
         box = "",
+        ueditor = layui.ueditor,
         form = layui.jqform,
-        tags = layui.tags;
-    form.set({
-        "blur": true,
-        "form": "#form1"
-    }).init();
+        jqtags = layui.jqtags;
+    jqtags.init();
 
-
-
-    //自定义
-    form.verify({
-        username: function(value) {
-            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
-                return '文章标题不能有特殊字符';
+    /**
+     * 在绑定数据前，初始化分类下拉框
+     */
+    form.beforeBind = function(jqtable, params, options) {
+        var locationData = layui.data("articleCat"),
+            record = locationData.list ? locationData.list : "";
+        if (record) {
+            var data = {
+                list: record
             }
-            if (/(^\_)|(\__)|(\_+$)/.test(value)) {
-                return '文章标题首尾不能出现下划线\'_\'';
-            }
-            if (/^\d+\d+$/.test(value)) {
-                return '文章标题不能全为数字';
-            }
-        },
-        pass: [
-            /^[\S]{6,12}$/, '密码必须6到12位，且不能出现空格'
-        ],
-        content: function(value) {
-            layedit.sync(editIndex);
-            return;
+            var getTpl = $("#select-tpl").html();
+            var obj = $("#select-cat");
+            tpl(getTpl).render(data, function(html) {
+                obj.html(html);
+            })
         }
+    }
+
+    form.init({
+        "form": "#form1"
     });
-    tags.init();
+
+
+
 
     //上传文件设置
     layui.upload({
@@ -66,15 +64,6 @@ layui.define(['jquery', 'tags', 'layedit', 'jqform', 'upload'], function(exports
             }
         }
     });
-
-    //富文本框
-    layedit.set({
-        uploadImage: {
-            url: '/php/upload.php'
-        }
-    });
-    var editIndex = layedit.build('content');
-
 
     exports('myform', {});
 });

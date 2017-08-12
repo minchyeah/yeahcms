@@ -10,22 +10,37 @@
  * +----------------------------------------------------------------------
  */
 
-layui.define(['jquery', 'form', 'layer', 'ajax', 'modal', 'jqmenu'], function(exports) {
+layui.define(['jquery', 'layer', 'jqbind'], function(exports) {
     var $ = layui.jquery,
         layer = layui.layer,
-        jqmenu = layui.jqmenu,
-        ajax = layui.ajax,
-        modal = layui.modal,
-        menu = new jqmenu(),
-        jqMain = function() {};
+        ajax = layui.jqajax,
+        jqMain = function() {
+            this.options = {
+                id: 123,
+                name: "nihao"
+            }
+        };
+
 
     /**
      *@todo 初始化方法
      */
     jqMain.prototype.init = function() {
+        // var a = {
+        //     b: "",
+        //     c: { al: "234", ae: 35 }
+
+        // }
+        // _this = this;
+        // var options = [];
+        // $.each(a, function(i, n) {
+        //     options[i] = $.extend(true, _this.options, n);
+
+        // })
+
+        // console.log(options);
+
         this.panelToggle();
-        modal.init();
-        menu.menuBind();
     }
 
     /**

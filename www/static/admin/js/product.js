@@ -9,17 +9,35 @@
  * +----------------------------------------------------------------------
  */
 
-layui.define(['jquery', 'layedit', 'jqform', 'webuploader', 'layer'], function(exports) {
+layui.define(['jquery', 'laytpl', 'jqform', 'webuploader', 'layer', 'jqcitys'], function(exports) {
     var $ = layui.jquery,
-        layedit = layui.layedit,
+        tpl = layui.laytpl,
         layer = layui.layer,
         form = layui.jqform,
+        citys = layui.jqcitys(),
         WebUploader = layui.webuploader();
-    form.set({
-        "change": true,
-        "form": "#form1"
-    }).init();
 
+
+    /**
+     * 在绑定数据前，初始化分类下拉框
+     */
+    form.beforeBind = function(jqtable, params, options) {
+        var locationData = layui.data("articleCat"),
+            record = locationData.list ? locationData.list : "";
+        if (record) {
+            var data = {
+                list: record
+            }
+            var getTpl = $("#select-tpl").html();
+            var obj = $("#select-cat");
+            tpl(getTpl).render(data, function(html) {
+                obj.html(html);
+            })
+        }
+    }
+    form.init({
+        "form": "#form1"
+    });
     //自定义
     form.verify({
         username: function(value) {
@@ -41,6 +59,7 @@ layui.define(['jquery', 'layedit', 'jqform', 'webuploader', 'layer'], function(e
             return;
         }
     });
+
 
     //定义上传组件
 
@@ -484,13 +503,6 @@ layui.define(['jquery', 'layedit', 'jqform', 'webuploader', 'layer'], function(e
     });
 
 
-    //富文本框
-    layedit.set({
-        uploadImage: {
-            url: '/php/upload.php'
-        }
-    });
-    var editIndex = layedit.build('conntent');
 
     exports('product', {});
 });

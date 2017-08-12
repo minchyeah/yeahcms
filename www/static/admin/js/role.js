@@ -9,12 +9,48 @@
  * +----------------------------------------------------------------------
  */
 
-layui.define(['jquery', 'form', 'jqform'], function(exports) {
+layui.define(['jquery', 'jqform', 'jqtable'], function(exports) {
     var $ = layui.jquery,
-        layedit = layui.layedit,
-        form = layui.form(),
-        forms = layui.jqform;
-    forms.init();
+        table = layui.jqtable,
+        list = new table(),
+        _record,
+        conf,
+        form = layui.jqform;
+    list.init({ tplid: "#list-tpl" });
+
+    /**
+     * 列表渲染完后执行,选中已有的权限模块
+     */
+    list.bindRole = function() {
+        var ids;
+        if (_record) {
+            if (typeof(_record.role) == "object") {
+                ids = _record.role;
+            } else {
+                ids = _record.role.split(",");
+            }
+
+            $(conf.form).find("input[lay-filter=role]").each(function(i, n) {
+                if ($.inArray($(n).val(), ids) > -1) {
+                    $(n).attr("checked", true);
+                }
+            })
+            form.render();
+        }
+    }
+
+    /**
+     * 数据绑定后执行，此处为调出数据
+     */
+    form.afterBind = function(record, params, config) {
+        _record = record;
+        conf = config;
+    }
+
+    form.init({
+        "form": "#form1"
+    });
+
 
     form.on('checkbox(role)', function(data) {
         //单击顶级菜单
@@ -81,7 +117,5 @@ layui.define(['jquery', 'form', 'jqform'], function(exports) {
     });
 
 
-    exports('role', {
-
-    });
+    exports('role', {});
 });

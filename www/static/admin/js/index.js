@@ -10,29 +10,30 @@
  * +----------------------------------------------------------------------
  */
 
-layui.define(['jquery', 'elem', 'jqmenu', 'layer'], function(exports) {
+layui.define(['jquery', 'jqmenu', 'layer'], function (exports) {
     var $ = layui.jquery,
-        element = layui.elem(),
         menu = layui.jqmenu,
         layer = layui.layer,
-        oneMenu = new menu();
-    jqIndex = function() {};
+        mainMenu = new menu();
+    jqIndex = function () { };
+    top.global.menu = mainMenu;
+
     /**
      *@todo 初始化方法
      */
-    jqIndex.prototype.init = function(options) {
+    jqIndex.prototype.init = function () {
 
-        oneMenu.init('menu-tpl');
+        mainMenu.init('#menu-tpl',{icon:true,fresh:false});
         this.showMenu();
         this.refresh();
 
-        $('.my-tips').click(function() {
+        $('.my-tips').click(function () {
             var l = layer.open({
                 type: 1,
                 title: "",
                 shade: false,
                 shadeClose: false,
-                area: ['400px', 'auto'],
+                area: ['346px', 'auto'],
                 content: $('.my-tip')
             });
         })
@@ -41,8 +42,8 @@ layui.define(['jquery', 'elem', 'jqmenu', 'layer'], function(exports) {
     /**
      *@todo 绑定刷新按钮单击事件
      */
-    jqIndex.prototype.refresh = function() {
-        $('.fresh-btn').bind("click", function() {
+    jqIndex.prototype.refresh = function () {
+        $('.fresh-btn').bind("click", function () {
             $('.jqadmin-body .layui-show').children('iframe')[0].contentWindow.location.reload(true);
         })
     }
@@ -50,20 +51,15 @@ layui.define(['jquery', 'elem', 'jqmenu', 'layer'], function(exports) {
     /**
      *@todo 绑定左侧菜单显示隐藏按钮单击事件
      */
-    jqIndex.prototype.showMenu = function() {
-        $('.menu-type').bind("click", function() {
-            if ($(window).width() < 450) {
-                $('.jqadmin-main-menu .layui-nav').show();
-            }
-            var type = parseInt($(this).data('type'));
-            oneMenu.menuShowType($(this).data('type'));
-            if (type >= 3) type = 0;
-            $(this).data('type', type + 1);
-
-        })
-
-        $('.menu-btn').click(function() {
-            oneMenu.showLeftMenu($(this));
+    jqIndex.prototype.showMenu = function () {
+        $('.menu-type').bind("click", function () {
+            var locationShowType = layui.data('showType');
+            var showType = locationShowType.moveType ? locationShowType.moveType==1?2:1 : 2;
+            layui.data('showType', {
+                key: 'moveType',
+                value: showType
+            });
+            mainMenu.menuShowType();
         })
     }
 

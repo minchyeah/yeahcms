@@ -1,7 +1,7 @@
 /*
  * @Author: Paco
  * @Date:   2017-02-7
- * @lastmodify 2017-03-17
+ * @lastmodify 2017-07-20
  * +----------------------------------------------------------------------
  * | jqadmin [ jq酷打造的一款懒人后台模板 ]
  * | Copyright (c) 2017 http://jqadmin.jqcool.net All rights reserved.
@@ -13,6 +13,51 @@
 html {
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+input,
+textarea {
+    color: #1E9FFF;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+    color: #DDD;
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+    color: #DDD;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+    color: #DDD;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+    color: #DDD;
+}
+
+.has-warning input::-webkit-input-placeholder,
+.has-warning textarea::-webkit-input-placeholder {
+    color: #FF5722;
+}
+
+.has-warning input:-moz-placeholder,
+.has-warning textarea:-moz-placeholder {
+    color: #FF5722;
+}
+
+.has-warning input::-moz-placeholder,
+textarea::-moz-placeholder {
+    color: #FF5722;
+}
+
+.has-warning input:-ms-input-placeholder,
+.has-warning textarea:-ms-input-placeholder {
+    color: #FF5722;
 }
 
 .head-title {
@@ -73,6 +118,12 @@ html {
 body {
     background: #f2f2f2;
     color: #999;
+}
+
+.layui-elem-quote {
+    background-color: #FFF;
+    font-size: 14px;
+    color: #ff6c60;
 }
 
 a,
@@ -144,8 +195,12 @@ a:hover {
     padding: 20px 10px;
 }
 
-.layui-form-pane .layui-form-label {
-    width: 110px;
+.layui-form-label {
+    width: 150px;
+}
+
+.layui-input-block {
+    margin-left: 150px;
 }
 
 .tag,
@@ -157,7 +212,7 @@ a:hover {
     border-radius: 2px;
     cursor: pointer;
     line-height: 36px;
-    margin: 0 0 10px 10px;
+    margin: 0 10px 10px 0;
 }
 
 .tag-selected {
@@ -229,7 +284,6 @@ a:hover {
 
 .layui-form-item .left-icon {
     float: left;
-    margin-left: 10px;
     padding: 10px 15px;
     background: #e6e6e6;
     border: 1px solid #e6e6e6;
@@ -240,17 +294,46 @@ a:hover {
     font-size: 12px;
 }
 
-.permission-list ul li {
-    margin-bottom: 25px;
+.layui-form-item .role-box {
+    position: relative;
+    column-width: 180px;
+}
+
+.layui-form-item .role-box .jq-role-inline {
+    height: 100%;
+    overflow: auto;
 }
 
 .permission-list ul li dl,
 .permission-list ul li dl dd {
-    margin-left: 3em;
+    margin-left: 1.5em;
 }
 
 .layui-form-switch {
     width: 50px;
+    margin-top: 0;
+}
+
+.layui-form .sort {
+    padding-left: 0;
+    line-height: 30px;
+    height: 30px;
+    text-align: center;
+    color: #999;
+}
+
+.jq-even tr:nth-child(even) {
+    background: #f4f4f5;
+}
+
+.jq-even tr:hover {
+    background: #999;
+    color: #FFF;
+}
+
+.layui-table th.txt-center,
+.layui-table td.txt-center {
+    text-align: center;
 }
 
 .font-pt {
@@ -267,58 +350,45 @@ a:hover {
     overflow: hidden;
 }
 
-@media screen and (max-width:54.8571rem) {
-    .table-box {
-        width: 100%;
-        overflow: hidden;
-        border-left: 1px solid #CCC;
-        border-right: 1px solid #CCC;
-    }
-    .table-box table {
-        margin: 0 0 0 -2px;
-    }
-    .layui-form .layui-inline .layui-input {
-        margin-bottom: 1rem;
-    }
-    .layui-form .layui-btn,
-    .group-button .layui-btn {
-        margin: 0 1rem 1rem 0;
-    }
+.layui-table tr th {
+    position: relative;
 }
 
-@media screen and (max-width:32.8571rem) {
-    .layui-form-item .layui-form-label {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        float: none;
-    }
-    .layui-form-item .layui-inline {
-        display: block;
-        margin-right: 0;
-        margin-bottom: 20px;
-        clear: both;
-    }
-    .layui-form-item .layui-inline:after {
-        content: '\20';
-        clear: both;
-        display: block;
-        height: 0;
-    }
-    .layui-form-item .layui-input-inline,
-    .layui-form-item .layui-input-block {
-        display: block;
-        float: none;
-        width: auto;
-        margin: 10px 0 10px 3px;
-    }
-    .layui-form-item .layui-input-inline+.layui-form-mid {
-        margin-left: 4px;
-        top: -5px;
-        padding: 0;
-    }
-    .layui-form-item .layui-form-checkbox {
-        margin-right: 5px;
-        margin-bottom: 5px;
-    }
+.layui-table th i {
+    font-size: 10px;
+    font-weight: normal;
+    line-height: 24px;
+    transform-origin: center center;
+    padding-left: 3px;
+    position: absolute;
+}
+
+.layui-table th i.rotate {
+    transform: rotate(180deg);
+    line-height: 20px;
+}
+
+.layui-table th .order {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+}
+
+.page-num {
+    margin: 0 10px;
+    display: inline-block;
+    width: 60px;
+    /* position: relative\0;
+    top: 10px\0; */
+}
+
+.page-num .layui-input,
+.page-num .layui-select {
+    height: 30px;
+    line-height: 30px;
+}
+
+.page-num .layui-form-select dl {
+    bottom: 32px;
+    top: -120px;
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: Paco
  * @Date:   2017-02-08
- * @lastmodify 2017-03-17
+ * @lastmodify 2017-07-24
  * +----------------------------------------------------------------------
  * | jqadmin [ jq酷打造的一款懒人后台模板 ]
  * | Copyright (c) 2017 http://jqadmin.jqcool.net All rights reserved.
@@ -19,6 +19,7 @@ layui.define(['jquery', 'layer', 'form'], function(exports) {
                 type: 1,
                 title: false,
                 full: false,
+                maxmin: false,
                 shadeClose: true,
                 shade: 0.3,
                 content: "",
@@ -73,6 +74,7 @@ layui.define(['jquery', 'layer', 'form'], function(exports) {
         if (typeof params === 'string') {
             params = JSON.parse(params)
         }
+
         var options = $.extend({}, this.options, params);
 
         return options;
@@ -89,43 +91,45 @@ layui.define(['jquery', 'layer', 'form'], function(exports) {
             layer.msg('请为当前元素配置的data-garams属性配置content值');
             return false;
         };
+
+
+
         var _area = "auto";
         if (options.area != "auto") {
-            _area = options.area.split(',');
-            var width = parseInt(_area[0]);
-            var dpr = window.devicePixelRatio;
-            var maxWidth = $(window).width() - 20 * dpr;
+
+            var width = parseInt(options.area),
+                _area = width + "px";
+            dpr = window.devicePixelRatio,
+                maxWidth = $(window).width() - 20 * dpr;
             if (width > maxWidth) {
-                _area[0] = (maxWidth) + "px";
+                _area = (maxWidth) + "px";
             }
-            var height = parseInt(_area[1]);
-            var maxHeight = $(window).height() - 20 * dpr;
-            if (height > maxHeight) {
-                _area[1] = (maxHeight) + "px";
-            }
-
         }
-
 
         if (options.full) {
             var l = layer.open({
                 type: 2,
                 title: options.title,
                 shadeClose: options.shadeClose,
+                maxmin: options.maxmin,
                 shade: options.shade,
                 content: options.content
+
             });
             layer.full(l);
         } else {
             var l = layer.open({
                 type: 2,
                 title: options.title,
+                maxmin: options.maxmin,
                 shadeClose: options.shadeClose,
                 shade: options.shade,
                 area: _area,
                 content: options.content
             });
         }
+
+
     }
 
     /**
@@ -139,63 +143,91 @@ layui.define(['jquery', 'layer', 'form'], function(exports) {
             layer.msg('请为当前元素配置的data-garams属性配置content值');
             return;
         }
+
         var _area = "auto";
         if (options.area != "auto") {
-            _area = options.area.split(',');
-            var width = parseInt(_area[0]);
 
-            var dpr = window.devicePixelRatio;
-            var maxWidth = $(window).width() - 20 * dpr;
+            var width = parseInt(options.area),
+                _area = width + "px";
+            dpr = window.devicePixelRatio,
+                maxWidth = $(window).width() - 20 * dpr;
             if (width > maxWidth) {
-                _area[0] = (maxWidth) + "px";
-            }
-            var height = parseInt(_area[1]);
-            var maxHeight = $(window).height() - 20 * dpr;
-            if (height > maxHeight) {
-                _area[1] = (maxHeight) + "px";
+                _area = (maxWidth) + "px";
             }
         }
         //判断是否有表单存在，如果有就重置表单
         if ($(options.content).find("form").length > 0) {
             $(options.content).find("form")[0].reset();
+            $(options.content).find("div").removeClass("has-warning");
+            $(options.content).find(".jq-error,.error").remove();
+            $(options.content).find(".defined-error,.imgbox").empty();
+
+            $(options.content).children("form").data("key", null);
         }
 
-        //判断是否需要为表单填充数据
+        //动态改表单的提交地址
         if (undefined != options.data || null != options.data) {
-            var inputHtml = "";
+
             // if (options.data.indexOf('&')) {
+
             var data = options.data.split("&");
             for (var i = 0; i < data.length; i++) {
                 var val = data[i].split("=");
                 if (val[0] == "url") {
-                    $(options.content).find("form").attr("action", val[1]);
+                    $(options.content).children("form").attr("action", val[1]);
                     continue;
                 }
-                var obj = $(options.content).find('input[name=' + val[0] + ']');
+            }
+        }
+
+        if (options.subcat) {
+            var filed = options.subcat.split("=");
+            var str = '<input type="hidden" name="' + filed[0] + '" value="' + filed[1] + '" />';
+            $(options.content).children("form").append(str);
+        }
+
+        //判断是否需要为表单填充数据
+        if (options.key) {
+            var inputHtml = "",
+                dataKey = options.key.split("="),
+                record = {};
+            $(options.content).children("form").data("key", options.key);
+            var dataName = $(this).data("data-name") ? $(this).data("name") : $(this).parents("table").data("name");
+            var _data = layui.data(dataName),
+                list = _data['cacheData'].list;
+            for (var key in list) {
+                if (list[key][dataKey[0]] == dataKey[1]) {
+                    record = list[key];
+                    break;
+                }
+            }
+            for (var key in record) {
+                var obj = $(options.content).find('input[name=' + key + ']');
                 if (obj.length > 0) {
                     if (obj.prop('type') == "text" || obj.prop('type') == "hidden") {
-                        obj.val(val[1]);
+                        obj.val(record[key]);
                     } else if (obj.prop('type') == "checkbox" || obj.prop('type') == "radio") {
                         obj.each(function(i, n) {
-                            if ($(n).val() == val[1]) {
+                            if ($(n).val() == record[key]) {
                                 $(n).prop("checked", true);
                             }
                         })
 
                     }
-                } else if ($(options.content).find('textarea[name=' + val[0] + ']').length > 0) {
-                    $(options.content).find('textarea[name=' + val[0] + ']').val(val[0]);
-                } else if ($(options.content).find('select[name=' + val[0] + ']').length > 0) {
-                    $(options.content).find('select[name=' + val[0] + ']').val(val[1]);
+                } else if ($(options.content).find('textarea[name=' + key + ']').length > 0) {
+                    $(options.content).find('textarea[name=' + key + ']').val(record[key]);
+                } else if ($(options.content).find('select[name=' + key + ']').length > 0) {
+                    $(options.content).find('select[name=' + key + ']').val(record[key]);
+                } else if ($(options.content).find('.imgbox[name=' + key + ']').length > 0) {
+                    var img = "<img src='" + record[key] + "' alt='' />"
+                    $(options.content).find('img[name=' + key + ']').append(img);
                 } else {
-                    inputHtml += '<input type="hidden" name="' + val[0] + '" value="' + val[1] + '" />';
+                    inputHtml += '<input type="hidden" name="' + key + '" value="' + record[key] + '" />';
                 }
             }
+            $(options.content).children("form").append(inputHtml);
             form.render();
-
-            $(options.content).find("form").append(inputHtml);
         }
-
 
 
         if (options.full) {

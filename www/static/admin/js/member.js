@@ -9,7 +9,7 @@
  * +----------------------------------------------------------------------
  */
 
-layui.define('echarts', function(exports) {
+layui.define(['echarts','jqbind'], function(exports) {
     var echarts = layui.echarts,
         $ = layui.jquery,
         option = {
